@@ -1,11 +1,18 @@
 {
   "name": "gz-popup",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.0.1",
+  "description": "a simple vue popup utils",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
-  "license": "ISC"
+  "author": "guafree",
+  "license": "ISC",
+  "directories": {
+    "lib": "lib"
+  },
+  "keywords": [
+    "popup",
+    "vue"
+  ]
 }

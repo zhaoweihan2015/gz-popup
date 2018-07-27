@@ -7,8 +7,8 @@
 jQuery插件的做法其实是仿照vue的slot。通过用户自行添加插槽内容，插件对插入内容进行包裹和处理，尽量使弹窗只完成弹窗需要的事情，不去影响其他逻辑。
 ### 1.创建
 #### HTML
-#### 在节点内填写所要展示的HTML内容
-#### 虽然在页面中用div包裹也可以，但是会有闪现问题，需要手动添加display:none
+在节点内填写所要展示的HTML内容
+虽然在页面中用div包裹也可以，但是会有闪现问题，需要手动添加display:none
 ```html
 <script type="type/popue" id="mask">
   <button type="button" onclick="m.close()">确定</button>
