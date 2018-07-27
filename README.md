@@ -38,8 +38,8 @@ m.close()
 ## VUE
 VUE版插件还是中规中矩的使用VUE自身的方法
 ### 1.下载
-```txt
-尚未上传，请稍后
+```npm
+npm install --save-dev gz-popup
 ```
 ### 2.组件使用
 ```html
