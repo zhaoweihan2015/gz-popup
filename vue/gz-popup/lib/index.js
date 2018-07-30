@@ -7,23 +7,19 @@ export default {
     const options_ = options || {}
 
     if(!$vm){
-      const GzPopupPlugin = Vue.extend(GzPopupComponent)
-      $vm = new GzPopupPlugin({
-        el:document.createElement('div')
-      })
+      let data = GzPopupComponent.data()
 
+      for (var key in options) {
+        if (options.hasOwnProperty(key)) {
+          data[key] = options[key]
+        }
+      }
 
-      $vm.w_ = 4000
-      console.log($vm)
-      // for (let key in options_) {
-      //   if (options.hasOwnProperty(key)) {
-      //
-      //   }
-      // }
-
-      document.body.appendChild($vm.$el)
-
-      Vue.component("GzPopup",$vm.$options)
+      GzPopupComponent.data = ()=>{
+        return data
+      }
+      let GzPopupPlugin = Vue.extend(GzPopupComponent)
+      Vue.component("GzPopup",GzPopupPlugin)
     }
   }
 }

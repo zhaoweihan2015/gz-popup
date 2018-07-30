@@ -1,14 +1,14 @@
 (function(window) {
   window.Masklayer = function Masklayer(o) {
-    var iw = $(window).width() < 750
+    this.limitWidth = o.limitWidth
 
     this.el = $(o.el || ".masklayer")
     this.content
     this.oldClassName
     this.masklayer = $('<div class="masklayer"></div>')
-    this.width = iw ? "90%" : (o.width || 500) + "px"
-    this.m_width = iw ? "45%" : o.width/2 + "px"
-    this.height = o.height || 500
+    this.width = o.w || 200
+    this.height = o.h || 200
+    this.smWidth = o.smWidth || 80
 
     this.init()
   }
@@ -46,7 +46,7 @@
    * @return {[type]} [description]
    */
   Masklayer.prototype.styleString = function() {
-    return ".masklayer{position:fixed;width:100%;height:100%;top:0;left:0;background-color:rgba(0,0,0,.5);z-index:998}.masklayer .masklayer-content{position:absolute;left:50%;top:50%;width:" + this.width + ";height:" + this.height + "px;margin-left:-" + this.m_width + ";margin-top:-" + this.height / 2 + "px;background-color:#fff;border-radius:4px;text-align:center;box-sizing:border-box;padding:21px 0}.masklayer .masklayer-close{position:absolute;right:12px;top:12px;cursor:pointer}"
+    return ".masklayer{position:fixed;width:100%;height:100%;top:0;left:0;background-color:rgba(0,0,0,.5);z-index:998}.masklayer .masklayer-content{position:absolute;left:50%;top:50%;width:" + this.width + "px;height:" + this.height + "px;margin-left:-" + this.width/2 + "px;margin-top:-" + this.height / 2 + "px;background-color:#fff;border-radius:4px;text-align:center;box-sizing:border-box;padding:21px 0}.masklayer .masklayer-close{position:absolute;right:12px;top:12px;cursor:pointer}@media screen and (max-width:"+ this.limitWidth +"px){.masklayer .masklayer-content{width:" + this.smWidth + "%;margin-left:-" + this.smWidth/2 + "%}}"
   }
 
   /**
@@ -58,6 +58,9 @@
     $('body').append($style)
   }
 
+  /**
+   * 事件绑定
+   */
   Masklayer.prototype.methodSet = function() {
     this.masklayer[0].addEventListener('click', function(e) {
       var el = $(e.target || window.event.target)
@@ -67,11 +70,18 @@
     }.bind(this))
   };
 
-
+  /**
+   * 弹窗显示
+   * @param  {Function} cb 事件结束后回调函数
+   */
   Masklayer.prototype.open = function(cb) {
     this.masklayer.fadeIn('normal',cb || null)
   }
 
+  /**
+   * 弹窗消失
+   * @param  {Function} cb 事件结束后回调函数
+   */
   Masklayer.prototype.close = function(cb) {
     this.masklayer.fadeOut('normal',cb || null)
   }

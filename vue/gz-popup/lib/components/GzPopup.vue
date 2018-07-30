@@ -1,7 +1,6 @@
 <template>
 <transition name="gz-masklayer">
-  <div id="gz-masklayer" v-show="isShow">
-    <div class="masklayer-bg" @click="close"></div>
+  <div id="gz-masklayer" v-if="isShow">
     <div class="masklayer-content" :style="setStyle">
       <div @click="close" class="masklayer-close glyphicon glyphicon-remove"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABhUlEQVQ4T6WTO0sDQRSFz5mEoGjjAySFha2PQhHT+BeS3Q3YaKdWNhZaaKvgo0hvY2GhjcVsCOQX2BhFG4OFIIKFFqKNokmWubIhK+OiEHTKe8/5uGfmDvHPw7jf87w+AKsiMglgvNW/JHkeBEGhVCo92Z5vAMdxsiQPSPb8NJiIvACY933fj/pfAMdxZpVSh+0kMsbMFYvFo1DbBORyuYFEInEHoKMdAICPWq02VC6XH5sAz/O2AaxZ5hMADwBmWrVjAGkA05ZmV2u91gS4rlslOWw1340xGZIbJBvGmE2l1CmATktzrbUejgANkkl7fBG5V0plgiAwSqkzkoOxeA2tdSoCvJLsigPq9fpUWEulUpU4QETefN/vju7gCsCIHQHAlIgskTQA9gBUYhGqWuvRaIItkusWIDTcACi0assAxgAsWpodrfV6E5DP59MicvvnZwwh/1qkaCzXdV2S+wB6f1moZxFZ+HGVI0M2m+1PJpMr4WciORHWReSirc/U5hp/k30CG6idEYisAi4AAAAASUVORK5CYII="></div>
       <slot></slot>
@@ -14,44 +13,47 @@ export default {
   name: 'gz-masklayer',
   data: () => ({
     isShow: false,
-    w_: document.body.offsetWidth || document.body.clientWidth
+    windowType: "lg"
   }),
   props: {
     w: {
-      default: 200
-    },
-    smWidth: {
-      default:80
-    },
-    limitWidth: {
-      default:750
+      type: Number
     },
     h: {
-      default: 200
+      type: Number
     },
-    show: {
-      type: Boolean,
-      default: false
-    }
+    value:{}
   },
   computed: {
     setStyle() {
-      return `height:${this.h}px;margin-top:-${this.h/2}px;` + ((this.w < this.w_ || this.w_ >= this.limitWidth) ? `width:${this.w}px;margin-left:-${this.w/2}px;` : `width:${this.default}%;margin-left:-${this.default/2}%;`)
-    }
-  },
-  watch: {
-    show(v) {
-      this.isShow = v
+      let i = {
+        w: this.w,
+        h: this.h,
+        ml: this.w / 2,
+        mt: this.h / 2
+      }
+      return `width:${i.w}px;height:${i.h}px;margin-left:-${i.ml}px;margin-top:-${i.mt}px`
     }
   },
   mounted() {
-    window.addEventListener('resize', () => {
-      this.w_ = document.body.offsetWidth || document.body.clientWidth
-    })
+    this.isShow = this.value
+    console.log(1);
+    this.resize()
+  },
+  watch: {
+    value(v) {
+      this.isShow = v
+    }
   },
   methods: {
     close() {
       this.isShow = false
+      this.$emit('input', this.isShow)
+    },
+    resize (){
+      window.addEventListener('resize',()=>{
+        console.log(document.body.offsetWidth)
+      })
     }
   }
 }
@@ -59,7 +61,7 @@ export default {
 <style scoped>
 .gz-masklayer-enter-active,
 .gz-masklayer-leave-active {
-  transition: opacity .3s;
+  transition: opacity .5s;
 }
 
 .gz-masklayer-enter,
@@ -73,14 +75,8 @@ export default {
   height: 100%;
   top: 0;
   left: 0;
-  z-index: 998
-}
-
-#gz-masklayer .masklayer-bg {
-  position: absolute;
-  width: 100%;
-  height: 100%;
   background-color: rgba(0, 0, 0, .5);
+  z-index: 998
 }
 
 #gz-masklayer .masklayer-content {
