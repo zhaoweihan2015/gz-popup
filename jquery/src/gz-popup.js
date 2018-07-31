@@ -1,14 +1,23 @@
-(function(window) {
-  window.Masklayer = function Masklayer(o) {
-    this.limitWidth = o.limitWidth
+(function($) {
+  $.fn.gzPopup = function(o) {
+    return new Masklayer($(this), o)
+  }
 
-    this.el = $(o.el || ".masklayer")
+  /**
+   * 弹窗对象
+   * @param  {dom} el 节点
+   * @param  {object} o  设置参数
+   * @constructor
+   */
+  function Masklayer(el, o) {
+    this.el = el
     this.content
     this.oldClassName
     this.masklayer = $('<div class="masklayer"></div>')
     this.width = o.w || 200
     this.height = o.h || 200
     this.smWidth = o.smWidth || 80
+    this.limitWidth = o.limitWidth || 750
 
     this.init()
   }
@@ -46,7 +55,7 @@
    * @return {[type]} [description]
    */
   Masklayer.prototype.styleString = function() {
-    return ".masklayer{position:fixed;width:100%;height:100%;top:0;left:0;background-color:rgba(0,0,0,.5);z-index:998}.masklayer .masklayer-content{position:absolute;left:50%;top:50%;width:" + this.width + "px;height:" + this.height + "px;margin-left:-" + this.width/2 + "px;margin-top:-" + this.height / 2 + "px;background-color:#fff;border-radius:4px;text-align:center;box-sizing:border-box;padding:21px 0}.masklayer .masklayer-close{position:absolute;right:12px;top:12px;cursor:pointer}@media screen and (max-width:"+ this.limitWidth +"px){.masklayer .masklayer-content{width:" + this.smWidth + "%;margin-left:-" + this.smWidth/2 + "%}}"
+    return ".masklayer{position:fixed;width:100%;height:100%;top:0;left:0;background-color:rgba(0,0,0,.5);z-index:998}.masklayer .masklayer-content{position:absolute;left:50%;top:50%;width:" + this.width + "px;height:" + this.height + "px;margin-left:-" + this.width / 2 + "px;margin-top:-" + this.height / 2 + "px;background-color:#fff;border-radius:4px;text-align:center;box-sizing:border-box;padding:21px 0}.masklayer .masklayer-close{position:absolute;right:12px;top:12px;cursor:pointer}@media screen and (max-width:" + this.limitWidth + "px){.masklayer .masklayer-content{width:" + this.smWidth + "%;margin-left:-" + this.smWidth / 2 + "%}}"
   }
 
   /**
@@ -75,7 +84,7 @@
    * @param  {Function} cb 事件结束后回调函数
    */
   Masklayer.prototype.open = function(cb) {
-    this.masklayer.fadeIn('normal',cb || null)
+    this.masklayer.fadeIn('normal', cb || null)
   }
 
   /**
@@ -83,6 +92,6 @@
    * @param  {Function} cb 事件结束后回调函数
    */
   Masklayer.prototype.close = function(cb) {
-    this.masklayer.fadeOut('normal',cb || null)
+    this.masklayer.fadeOut('normal', cb || null)
   }
-})(window)
+})(jQuery)
