@@ -17,10 +17,10 @@ export default {
   }),
   props: {
     w: {
-      type: Number
+      type: String
     },
     h: {
-      type: Number
+      type: String
     },
     value:{}
   },
@@ -36,13 +36,13 @@ export default {
     }
   },
   mounted() {
+    this.lockCheck()
+
     this.isShow = this.value
-    console.log(1);
-    this.resize()
   },
   watch: {
     value(v) {
-      this.isShow = v
+      if(this.lockCheck()) this.isShow = v
     }
   },
   methods: {
@@ -50,10 +50,10 @@ export default {
       this.isShow = false
       this.$emit('input', this.isShow)
     },
-    resize (){
-      window.addEventListener('resize',()=>{
-        console.log(document.body.offsetWidth)
-      })
+    lockCheck (){
+      let res = isNaN(Number(this.w)) || isNaN(Number(this.h))
+      if(res) console.warn("宽度高度相关属性必须为数字")
+      return !res
     }
   }
 }
